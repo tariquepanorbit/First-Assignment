@@ -86,7 +86,7 @@ const HelloWorldApp = () => {
   const changeShowTask = show => {
     setShowTask(show);
   };
-  function onCloseModal(task, clickdate) {
+  const onCloseModal = (task, clickdate) => {
     console.log(clickdate);
     setTaskId(taskId + 1);
     const moment = require('moment');
@@ -104,7 +104,7 @@ const HelloWorldApp = () => {
     setVisible(false);
     setAllTask(currentData => [...currentData, task]);
     console.log('taskdetails', taskdetails);
-  }
+  };
   let asArray = Object.entries(taskdetails);
   let result = asArray.filter(i => i[1]['listName'] === selectedItem.name);
   console.log('result is ', result);
