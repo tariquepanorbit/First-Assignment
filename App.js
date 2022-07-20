@@ -1,8 +1,15 @@
 import React, {Component} from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import ListModal from './src/components/ListModal';
 import SelectList from './src/components/SelectList';
-import {Text, View, StyleSheet, Pressable} from 'react-native';
+import AddNewList from './src/components/AddNewList';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
   faCoffee,
@@ -19,50 +26,136 @@ const HelloWorldApp = () => {
       id: 2,
       name: 'New List',
     },
+    {
+      id: 3,
+      name: 'Finished',
+    },
   ];
-
   const [allTask, setAllTask] = useState([]);
-
   const [visible, setVisible] = useState(false);
+  //const [newListModal, setNewListModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(data[0]);
-  const onSelect = item => {
-    //console.log('item is', item);
-    setSelectedItem(item);
+  const [allList, setAllList] = useState(data);
+  const [taskdetails, setTaskDetails] = useState({});
+  const [taskId, setTaskId] = useState(1);
+  const [showTask, setShowTask] = useState(false);
+  const [finished, setFinished] = useState([]);
+  const [list, setList] = useState();
+  const [count, setCount] = useState(4);
+  const [data2, setData2] = useState(data);
+  const [clickCount, setClickCount] = useState(0);
+
+  const taskdate = val => {
+    setDate(val);
   };
-  console.log(selectedItem);
+
+  const allLists = data => {
+    setAllList(data);
+  };
+  const click = value => {
+    setClickCount(value + 1);
+    console.log('App', clickCount);
+  };
+  const onSelect = (item, clickCount) => {
+    setSelectedItem(item);
+    setShowTask(true);
+  };
   function onclickHandler() {
     setVisible(true);
   }
-  function addTask() {}
-  function onCloseModal(task) {
+  const deleteTask = event => {
+    var task = event._dispatchInstances.memoizedProps.children;
+    console.log('task is', task[0]);
+    delete taskdetails[task[0]];
+    console.log('taskdetails', taskdetails);
+    setFinished(currentData => [...currentData, task]);
+  };
+  const newList = list => {
+    setList(list);
+    setCount(count + 1);
+    setData2(prevState => [...prevState, {id: count, name: list}]);
+    setAllList(data2);
+  };
+
+  function onCloseModal(task, clickdate) {
+    console.log(clickdate);
+    setTaskId(taskId + 1);
+    const moment = require('moment');
+    let d = new Date(clickdate);
+    d = moment(d).format('MMM Do YY');
+    console.log('ddd', d);
+
+    setTaskDetails({
+      ...taskdetails,
+      [task]: {
+        id: taskId,
+        dueDate: d,
+        listName: selectedItem.name,
+      },
+    });
     setVisible(false);
     setAllTask(currentData => [...currentData, task]);
-    console.log('allTask', task, allTask);
+    console.log('taskdetails', taskdetails);
   }
-
+  let asArray = Object.entries(taskdetails);
+  let result = asArray.filter(i => i[1]['listName'] === selectedItem.name);
+  console.log('result is ', result);
+  console.log('Finished is', finished);
   return (
     <View style={[styles.appContainer]}>
       {selectedItem != 'New List' && (
         <View>
           <SelectList
+            list={list}
+            click={click}
+            showTask={showTask}
+            allLists={allLists}
+            allTask={allTask}
             value={selectedItem}
-            data={data}
+            data={data2}
             onSelect={onSelect}></SelectList>
           <View style={styles.taskView}>
-            {allTask.map(t => (
-              <Text key={Math.random()} style={styles.task}>
-                {t}
+            {result.map(t => (
+              <Text
+                onPress={deleteTask}
+                key={Math.random()}
+                ref={elem => (this.textElem = elem)}
+                style={styles.task}>
+                {t[0]}
+                <View style={styles.date}>
+                  <Text>{t[1].dueDate}</Text>
+                </View>
               </Text>
             ))}
           </View>
+          <View>
+            {selectedItem.name == 'New List' ? (
+              <AddNewList newList={newList}></AddNewList>
+            ) : selectedItem.name == 'Finished' ? (
+              <View style={styles.taskView}>
+                {finished.map(t => (
+                  <Text key={Math.random()} style={styles.task}>
+                    {t}
+                  </Text>
+                ))}
+              </View>
+            ) : null}
+          </View>
         </View>
       )}
-
-      <Pressable style={styles.circleplus} onPress={onclickHandler}>
-        <FontAwesomeIcon icon={faCirclePlus} size={50} color={'#317773'} />
-      </Pressable>
+      {selectedItem.name != 'New List' ? (
+        selectedItem.name != 'Finished' ? (
+          <Pressable style={styles.circleplus} onPress={onclickHandler}>
+            <FontAwesomeIcon icon={faCirclePlus} size={50} color={'white'} />
+          </Pressable>
+        ) : null
+      ) : null}
       {visible && (
-        <ListModal showSelect={visible} closeModal={onCloseModal}>
+        <ListModal
+          taskdate={taskdate}
+          showSelect={visible}
+          closeModal={onCloseModal}
+          selectedItem={selectedItem}>
           {' '}
         </ListModal>
       )}
@@ -76,11 +169,11 @@ const styles = StyleSheet.create({
     height: 200,
   },
   appContainer: {
-    flex: 2,
+    flex: 1,
     padding: 40,
     paddingLeft: 0,
     paddingRight: 0,
-    backgroundColor: '#FBEAEB',
+    backgroundColor: '#124c81',
     justifyContent: 'space-between',
   },
   circleplus: {
@@ -91,7 +184,20 @@ const styles = StyleSheet.create({
     paddingBottom: 30,
     color: 'white',
   },
-
+  taskView: {
+    flexDirection: 'column',
+    position: 'relative',
+    top: -700,
+    backgroundColor: '#42b3f5',
+    justifyContent: 'flex-start',
+  },
+  date: {
+    padding: 10,
+    margin: 10,
+    color: 'blue',
+    fontSize: 15,
+    borderColor: '#427bf5',
+  },
   button: {
     alignItems: 'center',
   },
@@ -102,7 +208,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   task: {
-    fontSize: 50,
-    fontWeight: 'bold',
+    margin: 2,
+    padding: 5,
+    borderWidth: 1,
+    fontSize: 30,
+    borderColor: '#427bf5',
   },
 });

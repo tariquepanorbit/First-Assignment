@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -10,38 +10,41 @@ import {
 } from 'react-native';
 function AddNewList(props) {
   const [changeText, setChangeText] = useState('');
-  const [newTask, setNewTask] = useState('');
-  const onAddTask = task => {
-    setChangeText(task);
+  const [newList, setNewList] = useState('');
+  const onAddList = list => {
+    setChangeText(list);
   };
-  const addNewTask = () => {
-    setNewTask(changeText);
-    //console.log('newTask is', newTask);
+  const addNewList = list => {
+    setNewList(changeText);
+    props.newList(changeText);
   };
   const onPress = () => {
-    addNewTask();
-    props.addNewList(newTask);
+    addNewList();
   };
+  useEffect(() => {});
   return (
-    <View>
+    <View style={((height = '400'), (width = '300'))}>
       <View style={styles.container}>
         <Text style={styles.text}>Enter Task</Text>
-        <TextInput style={styles.input} onChangeText={onAddTask}></TextInput>
+        <TextInput style={styles.input} onChangeText={onAddList}></TextInput>
         <Button title="Add List" onPress={onPress}></Button>
       </View>
     </View>
   );
 }
-
 export default AddNewList;
 styles = StyleSheet.create({
   container: {
-    position: 'relative',
-    top: 200,
-    right: 0,
-    width: 200,
-    height: 150,
-    backgroundColor: '#8AAAE5',
+    borderWidth: 5,
+    flex: 1,
+    position: 'absolute',
+    padding: 20,
+    top: -500,
+    left: 50,
+    right: 100,
+    width: '75%',
+    height: 160,
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignSelf: 'center',
   },
@@ -49,7 +52,7 @@ styles = StyleSheet.create({
     color: 'black',
     fontSize: 20,
     margin: 20,
-    marginLeft: 40,
+    marginLeft: 90,
     fontWeight: 'bold',
   },
   input: {

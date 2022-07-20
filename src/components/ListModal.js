@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import CalendarPicker from 'react-native-calendar-picker';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleCheck} from '@fortawesome/free-solid-svg-icons';
@@ -11,32 +11,27 @@ import {
   TextInput,
   Button,
 } from 'react-native';
-
 const ListModal = props => {
+  const selected = props.selectedItem.name;
   const [task, setTask] = useState('');
   const textInputHandler = text => {
     setTask(text);
   };
-  const onAddTask = () => {
-    // setAllTask(currentTasks => [...currentTasks, task]);
-    //console.log(task);
-    // setAllTask([...allTask, task]);
-    // console.log(allTask);
-    //setAllTask(task);
-    console.log(task);
+  const setSelectedStartDate = date => {
+    setSelectedtDate(date);
   };
-
-  //console.log(allTask);
-  //console.log(allTask);
+  const onAddTask = () => {};
   const onPress = () => {
-    onAddTask();
-    //props.listTask(allTask);
-    props.closeModal(task);
+    // onAddTask();
+    console.log('date in listmodal', selectedDate);
+    props.closeModal(task, selectedDate);
+    //props.taskdate(selectedDate);
   };
-  const [selectedStartDate, setSelectedStartDate] = useState(null);
-  const startDate = selectedStartDate
-    ? selectedStartDate.format('YYYY-MM-DD').toString()
+  const [selectedDate, setSelectedtDate] = useState(null);
+  const startDate = selectedDate
+    ? selectedDate.format('YYYY-MM-DD').toString()
     : '';
+  useEffect(() => {}, []);
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Enter your task</Text>

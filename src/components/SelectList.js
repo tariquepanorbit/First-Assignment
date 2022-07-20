@@ -6,42 +6,42 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  ScrollView,
+  FlatList,
 } from 'react-native';
 import AddNewList from './AddNewList';
-function SelectList({data = [], value = {}, onSelect = () => {}}) {
-  const [count, setCount] = useState(3);
+function SelectList({
+  data = [],
+  value = {},
+  showTask = {},
+  onPress = () => {},
+  onSelect = () => {},
+  click = {},
+  allLists = () => {},
+}) {
   const [visible, setVisible] = useState('false');
   const [showList, setShowList] = useState(false);
-  const [data2, setData2] = useState(data);
-  //console.log(Array.isArray(data2));
-  //useEffect(() => setCount(count + 1));
+  const [clickCount, setClickCount] = useState(0);
   function addList() {
     setVisible('true');
   }
+  onPress = () => {
+    setClickCount(clickCount + 1);
+    setShowList(!showList);
+    click(clickCount);
+  };
   const onSelectedItem = val => {
     setShowList(false);
-
     onSelect(val);
-    //console.log(val.name);
-  };
-
-  const onAddNewList = task => {
-    setCount(count + 1);
-    setData2(prevState => [...prevState, {id: count, name: task}]);
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.dropDownStyle}
-        onPress={() => setShowList(!showList)}>
+      <TouchableOpacity style={styles.dropDownStyle} onPress={onPress}>
         <Text style={styles.text}>{!!value ? value.name : `Your List`}</Text>
       </TouchableOpacity>
       <View>
         {showList &&
-          visible &&
-          data2.map((val, i) => {
+          data.map((val, i) => {
             return (
               <TouchableOpacity
                 key={String(i)}
@@ -51,22 +51,18 @@ function SelectList({data = [], value = {}, onSelect = () => {}}) {
             );
           })}
       </View>
-      {value.name == 'New List' ? (
-        <AddNewList addNewList={onAddNewList}></AddNewList>
-      ) : null}
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#E2D1F9',
     flexDirection: 'column',
-    width: 150,
-    height: 'auto',
-    maxHeight: 150,
+    width: 200,
+    height: '100%',
     justifyContent: 'flex-start',
     alignSelf: 'center',
     marginTop: 0,
+    overflow: 'scroll',
   },
   text: {
     fontSize: 30,
@@ -76,12 +72,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   dropDownStyle: {
-    backgroundColor: '#97A6DE',
+    backgroundColor: '#4881a1',
     padding: 8,
     borderRadius: 6,
     justifyContent: 'center',
     alignItems: 'center',
   },
 });
-
 export default SelectList;
