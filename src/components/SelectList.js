@@ -40,6 +40,9 @@ function SelectList({
       setShowList(true);
     }
   }, [data]);
+  useEffect(() => {
+    setShowList(false);
+  }, [value]);
   console.log('value', value.name);
   return (
     <View style={styles.container}>

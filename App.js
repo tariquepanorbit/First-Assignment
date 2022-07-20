@@ -59,9 +59,10 @@ const HelloWorldApp = () => {
     setSelectedItem(item);
     setShowTask(true);
   };
-  function onclickHandler() {
+  const onclickHandler = () => {
+    setShowTask(true);
     setVisible(true);
-  }
+  };
   const deleteTask = event => {
     var task = event._dispatchInstances.memoizedProps.children;
     console.log('task is', task[0]);
@@ -140,18 +141,18 @@ const HelloWorldApp = () => {
           <View>
             {selectedItem.name == 'New List' ? (
               <AddNewList newList={newList}></AddNewList>
-            ) : selectedItem.name == 'Finished' ? ( <>(
-            {showTask &&
-(
-              <View style={styles.taskView}>
-                {finished.map(t => (
-                  <Text key={Math.random()} style={styles.task}>
-                    {t}
-                  </Text>
-                ))}
-              </View>
-)
-</>
+            ) : selectedItem.name == 'Finished' ? (
+              <>
+                {showTask && (
+                  <View style={styles.taskView}>
+                    {finished.map(t => (
+                      <Text key={Math.random()} style={styles.task}>
+                        {t}
+                      </Text>
+                    ))}
+                  </View>
+                )}
+              </>
             ) : null}
           </View>
         </View>
