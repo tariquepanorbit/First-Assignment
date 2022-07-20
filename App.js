@@ -43,6 +43,7 @@ const HelloWorldApp = () => {
   const [count, setCount] = useState(4);
   const [data2, setData2] = useState(data);
   const [clickCount, setClickCount] = useState(0);
+  const [result, setResult] = useState([]);
 
   const taskdate = val => {
     setDate(val);
@@ -110,8 +111,11 @@ const HelloWorldApp = () => {
     setAllTask(currentData => [...currentData, task]);
     console.log('taskdetails', taskdetails);
   };
-  let asArray = Object.entries(taskdetails);
-  let result = asArray.filter(i => i[1]['listName'] === selectedItem.name);
+  useEffect(()=>{
+    let asArray = Object.entries(taskdetails);
+    setResult(asArray.filter(i => i[1]['listName'] === selectedItem.name));
+  },[taskdetails]);
+  
   console.log('result is ', result);
   console.log('Finished is', finished);
   return (
