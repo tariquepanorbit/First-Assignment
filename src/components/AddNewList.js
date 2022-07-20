@@ -6,19 +6,19 @@ import {
   TextInput,
   StyleSheet,
   Button,
-  Pressable,
 } from 'react-native';
 function AddNewList(props) {
   const [changeText, setChangeText] = useState('');
-  const [newList, setNewList] = useState('');
   const [showListEntry, setShowListEntry] = useState(true);
+  
   const onAddList = list => {
     setChangeText(list);
   };
-  const addNewList = list => {
-    setNewList(changeText);
+
+  const addNewList = () => {
     props.newList(changeText);
   };
+
   const onPress = () => {
     setShowListEntry(false);
     addNewList();

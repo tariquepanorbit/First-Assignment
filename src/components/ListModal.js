@@ -9,10 +9,8 @@ import {
   StyleSheet,
   Pressable,
   TextInput,
-  Button,
 } from 'react-native';
 const ListModal = props => {
-  const selected = props.selectedItem.name;
   const [task, setTask] = useState('');
   const textInputHandler = text => {
     setTask(text);
@@ -20,12 +18,9 @@ const ListModal = props => {
   const setSelectedStartDate = date => {
     setSelectedtDate(date);
   };
-  const onAddTask = () => {};
   const onPress = () => {
-    // onAddTask();
     console.log('date in listmodal', selectedDate);
     props.closeModal(task, selectedDate);
-    //props.taskdate(selectedDate);
   };
   const [selectedDate, setSelectedtDate] = useState(null);
   const startDate = selectedDate

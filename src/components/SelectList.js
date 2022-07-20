@@ -4,11 +4,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
-  FlatList,
 } from 'react-native';
-import AddNewList from './AddNewList';
 function SelectList({
   data = [],
   value = {},
@@ -17,32 +14,32 @@ function SelectList({
   onSelect = () => {},
   click = {},
   changeShowTask,
-  allLists = () => {},
 }) {
-  const [visible, setVisible] = useState('false');
   const [showList, setShowList] = useState(false);
   const [clickCount, setClickCount] = useState(0);
-  function addList() {
-    setVisible('true');
-  }
+  
   onPress = () => {
     setClickCount(clickCount + 1);
     changeShowTask(showList);
     setShowList(!showList);
     click(clickCount);
   };
+  
   const onSelectedItem = val => {
     setShowList(false);
     onSelect(val);
   };
+  
   useEffect(() => {
     if (data.length > 3) {
       setShowList(true);
     }
   }, [data]);
+  
   useEffect(() => {
     setShowList(false);
   }, [value]);
+
   useEffect(() => {
     setShowList(!showTask);
   }, [showTask]);
