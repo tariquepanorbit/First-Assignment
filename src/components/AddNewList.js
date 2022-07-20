@@ -11,7 +11,7 @@ import {
 function AddNewList(props) {
   const [changeText, setChangeText] = useState('');
   const [newList, setNewList] = useState('');
-  const [showListEntry,setShowListEntry] = useState(true);
+  const [showListEntry, setShowListEntry] = useState(true);
   const onAddList = list => {
     setChangeText(list);
   };
@@ -20,22 +20,25 @@ function AddNewList(props) {
     props.newList(changeText);
   };
   const onPress = () => {
+    setShowListEntry(false);
     addNewList();
   };
   useEffect(() => {});
   return (
-    { showListEntry && (
-    <View style={((height = '400'), (width = '300'))}>
-      <View style={styles.container}>
-        <Text style={styles.text}>Enter Task</Text>
-        <TextInput style={styles.input} onChangeText={onAddList}></TextInput>
-        <Button title="Add List" onPress={onPress}></Button>
-      </View>
-    </View>
-    )
-    }
+    <>
+      {showListEntry && (
+        <View style={((height = '400'), (width = '300'))}>
+          <View style={styles.container}>
+            <Text style={styles.text}>Enter List Name</Text>
+            <TextInput
+              style={styles.input}
+              onChangeText={onAddList}></TextInput>
+            <Button title="Add List" onPress={onPress}></Button>
+          </View>
+        </View>
+      )}
+    </>
   );
-    
 }
 export default AddNewList;
 styles = StyleSheet.create({
@@ -43,15 +46,14 @@ styles = StyleSheet.create({
     borderWidth: 5,
     flex: 1,
     position: 'absolute',
-    padding: 20,
+    padding: 5,
     top: -500,
-    left: 50,
+    left: 40,
     right: 100,
     width: '75%',
-    height: 160,
+    height: 180,
     backgroundColor: 'white',
     justifyContent: 'center',
-    alignSelf: 'center',
   },
   text: {
     color: 'black',

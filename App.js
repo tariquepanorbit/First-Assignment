@@ -75,6 +75,13 @@ const HelloWorldApp = () => {
     setData2(prevState => [...prevState, {id: count, name: list}]);
     setAllList(data2);
   };
+  useEffect(() => {
+    console.log('sssss', list);
+    if (list !== undefined) {
+      console.log('rrrrrr', data2[data2.length - 1], data2);
+      onSelect(data2[data2.length - 1]);
+    }
+  }, [data2]);
   const changeShowTask = show => {
     setShowTask(show);
   };
@@ -85,7 +92,6 @@ const HelloWorldApp = () => {
     let d = new Date(clickdate);
     d = moment(d).format('MMM Do YY');
     console.log('ddd', d);
-
     setTaskDetails({
       ...taskdetails,
       [task]: {
@@ -134,7 +140,9 @@ const HelloWorldApp = () => {
           <View>
             {selectedItem.name == 'New List' ? (
               <AddNewList newList={newList}></AddNewList>
-            ) : selectedItem.name == 'Finished' ? (
+            ) : selectedItem.name == 'Finished' ? ( <>(
+            {showTask &&
+(
               <View style={styles.taskView}>
                 {finished.map(t => (
                   <Text key={Math.random()} style={styles.task}>
@@ -142,6 +150,8 @@ const HelloWorldApp = () => {
                   </Text>
                 ))}
               </View>
+)
+</>
             ) : null}
           </View>
         </View>

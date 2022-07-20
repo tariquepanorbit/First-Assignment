@@ -40,6 +40,7 @@ function SelectList({
       setShowList(true);
     }
   }, [data]);
+  console.log('value', value.name);
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.dropDownStyle} onPress={onPress}>
