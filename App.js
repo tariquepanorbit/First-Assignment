@@ -76,7 +76,9 @@ const HelloWorldApp = () => {
     setData2(prevState => [...prevState, {id: count, name: list}]);
     setAllList(data2);
   };
-
+  const changeShowTask = show => {
+    setShowTask(show);
+  };
   function onCloseModal(task, clickdate) {
     console.log(clickdate);
     setTaskId(taskId + 1);
@@ -106,6 +108,7 @@ const HelloWorldApp = () => {
       {selectedItem != 'New List' && (
         <View>
           <SelectList
+            changeShowTask={changeShowTask}
             list={list}
             click={click}
             showTask={showTask}
@@ -115,18 +118,19 @@ const HelloWorldApp = () => {
             data={data2}
             onSelect={onSelect}></SelectList>
           <View style={styles.taskView}>
-            {result.map(t => (
-              <Text
-                onPress={deleteTask}
-                key={Math.random()}
-                ref={elem => (this.textElem = elem)}
-                style={styles.task}>
-                {t[0]}
-                <View style={styles.date}>
-                  <Text>{t[1].dueDate}</Text>
-                </View>
-              </Text>
-            ))}
+            {!showTask &&
+              result.map(t => (
+                <Text
+                  onPress={deleteTask}
+                  key={Math.random()}
+                  ref={elem => (this.textElem = elem)}
+                  style={styles.task}>
+                  {t[0]}
+                  <View style={styles.date}>
+                    <Text>{t[1].dueDate}</Text>
+                  </View>
+                </Text>
+              ))}
           </View>
           <View>
             {selectedItem.name == 'New List' ? (
@@ -164,10 +168,6 @@ const HelloWorldApp = () => {
 };
 export default HelloWorldApp;
 const styles = StyleSheet.create({
-  taskcontainer: {
-    width: 200,
-    height: 200,
-  },
   appContainer: {
     flex: 1,
     padding: 40,

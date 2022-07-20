@@ -16,6 +16,7 @@ function SelectList({
   onPress = () => {},
   onSelect = () => {},
   click = {},
+  changeShowTask,
   allLists = () => {},
 }) {
   const [visible, setVisible] = useState('false');
@@ -26,6 +27,7 @@ function SelectList({
   }
   onPress = () => {
     setClickCount(clickCount + 1);
+    if (showList === false) changeShowTask(false);
     setShowList(!showList);
     click(clickCount);
   };
