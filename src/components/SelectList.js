@@ -12,7 +12,7 @@ import AddNewList from './AddNewList';
 function SelectList({
   data = [],
   value = {},
-  showTask = {},
+  showTask,
   onPress = () => {},
   onSelect = () => {},
   click = {},
@@ -43,6 +43,9 @@ function SelectList({
   useEffect(() => {
     setShowList(false);
   }, [value]);
+  useEffect(() => {
+    setShowList(!showTask);
+  }, [showTask]);
   console.log('value', value.name);
   return (
     <View style={styles.container}>
