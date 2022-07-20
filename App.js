@@ -83,6 +83,11 @@ const HelloWorldApp = () => {
       onSelect(data2[data2.length - 1]);
     }
   }, [data2]);
+  useEffect(() => {
+    if (visible === false) {
+      setShowTask(true);
+    }
+  }, [visible]);
   const changeShowTask = show => {
     setShowTask(show);
   };
