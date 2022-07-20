@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {useState, useEffect} from 'react';
 import ListModal from './src/components/ListModal';
 import SelectList from './src/components/SelectList';
@@ -8,12 +8,9 @@ import {
   View,
   StyleSheet,
   Pressable,
-  TouchableOpacity,
 } from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
-  faCoffee,
-  faCaretDown,
   faCirclePlus,
 } from '@fortawesome/free-solid-svg-icons';
 const HelloWorldApp = () => {
@@ -34,7 +31,6 @@ const HelloWorldApp = () => {
   const [allTask, setAllTask] = useState([]);
   const [visible, setVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(data[0]);
-  const [allList, setAllList] = useState(data);
   const [taskdetails, setTaskDetails] = useState({});
   const [taskId, setTaskId] = useState(1);
   const [showTask, setShowTask] = useState(false);
@@ -43,15 +39,11 @@ const HelloWorldApp = () => {
   const [count, setCount] = useState(4);
   const [data2, setData2] = useState(data);
   const [clickCount, setClickCount] = useState(0);
-  //const [result, setResult] = useState([]);
 
   const taskdate = val => {
     setDate(val);
   };
 
-  const allLists = data => {
-    setAllList(data);
-  };
   const click = value => {
     setClickCount(value + 1);
     console.log('App', clickCount);
@@ -84,14 +76,11 @@ const HelloWorldApp = () => {
       onSelect(data2[data2.length - 1]);
     }
   }, [data2]);
-  // useEffect(() => {
-  //   if (visible === false) {
-  //     setShowTask(true);
-  //   }
-  // }, [visible]);
+
   const changeShowTask = show => {
     setShowTask(show);
   };
+
   const onCloseModal = (task, clickdate) => {
     console.log(clickdate);
     setTaskId(taskId + 1);
@@ -107,6 +96,7 @@ const HelloWorldApp = () => {
         listName: selectedItem.name,
       },
     });
+    
     setVisible(false);
     setAllTask(currentData => [...currentData, task]);
     console.log('taskdetails', taskdetails);
@@ -125,7 +115,7 @@ const HelloWorldApp = () => {
             list={list}
             click={click}
             showTask={showTask}
-            allLists={allLists}
+            // allLists={allLists}
             allTask={allTask}
             value={selectedItem}
             data={data2}
