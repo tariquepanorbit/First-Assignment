@@ -27,7 +27,7 @@ function SelectList({
   }
   onPress = () => {
     setClickCount(clickCount + 1);
-    if (showList === false) changeShowTask(false);
+    changeShowTask(showList);
     setShowList(!showList);
     click(clickCount);
   };
@@ -35,7 +35,11 @@ function SelectList({
     setShowList(false);
     onSelect(val);
   };
-
+  useEffect(() => {
+    if (data.length > 3) {
+      setShowList(true);
+    }
+  }, [data]);
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.dropDownStyle} onPress={onPress}>

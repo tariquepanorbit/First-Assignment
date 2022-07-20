@@ -33,7 +33,6 @@ const HelloWorldApp = () => {
   ];
   const [allTask, setAllTask] = useState([]);
   const [visible, setVisible] = useState(false);
-  //const [newListModal, setNewListModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(data[0]);
   const [allList, setAllList] = useState(data);
   const [taskdetails, setTaskDetails] = useState({});
@@ -118,7 +117,7 @@ const HelloWorldApp = () => {
             data={data2}
             onSelect={onSelect}></SelectList>
           <View style={styles.taskView}>
-            {!showTask &&
+            {showTask &&
               result.map(t => (
                 <Text
                   onPress={deleteTask}

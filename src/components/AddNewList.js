@@ -11,6 +11,7 @@ import {
 function AddNewList(props) {
   const [changeText, setChangeText] = useState('');
   const [newList, setNewList] = useState('');
+  const [showListEntry,setShowListEntry] = useState(true);
   const onAddList = list => {
     setChangeText(list);
   };
@@ -23,6 +24,7 @@ function AddNewList(props) {
   };
   useEffect(() => {});
   return (
+    { showListEntry && (
     <View style={((height = '400'), (width = '300'))}>
       <View style={styles.container}>
         <Text style={styles.text}>Enter Task</Text>
@@ -30,7 +32,10 @@ function AddNewList(props) {
         <Button title="Add List" onPress={onPress}></Button>
       </View>
     </View>
+    )
+    }
   );
+    
 }
 export default AddNewList;
 styles = StyleSheet.create({
