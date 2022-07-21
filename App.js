@@ -3,16 +3,9 @@ import {useState, useEffect} from 'react';
 import ListModal from './src/components/ListModal';
 import SelectList from './src/components/SelectList';
 import AddNewList from './src/components/AddNewList';
-import {
-  Text,
-  View,
-  StyleSheet,
-  Pressable,
-} from 'react-native';
+import {Text, View, StyleSheet, Pressable} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {
-  faCirclePlus,
-} from '@fortawesome/free-solid-svg-icons';
+import {faCirclePlus} from '@fortawesome/free-solid-svg-icons';
 const HelloWorldApp = () => {
   let data = [
     {
@@ -38,16 +31,11 @@ const HelloWorldApp = () => {
   const [list, setList] = useState();
   const [count, setCount] = useState(4);
   const [data2, setData2] = useState(data);
-  const [clickCount, setClickCount] = useState(0);
 
   const taskdate = val => {
     setDate(val);
   };
 
-  const click = value => {
-    setClickCount(value + 1);
-    console.log('App', clickCount);
-  };
   const onSelect = (item, clickCount) => {
     setSelectedItem(item);
     setShowTask(true);
@@ -58,21 +46,18 @@ const HelloWorldApp = () => {
   };
   const deleteTask = event => {
     var task = event._dispatchInstances.memoizedProps.children;
-    console.log('task is', task[0]);
+
     delete taskdetails[task[0]];
-    console.log('taskdetails', taskdetails);
+
     setFinished(currentData => [...currentData, task]);
   };
   const newList = list => {
     setList(list);
     setCount(count + 1);
     setData2(prevState => [...prevState, {id: count, name: list}]);
-    setAllList(data2);
   };
   useEffect(() => {
-    console.log('sssss', list);
     if (list !== undefined) {
-      console.log('rrrrrr', data2[data2.length - 1], data2);
       onSelect(data2[data2.length - 1]);
     }
   }, [data2]);
@@ -82,12 +67,10 @@ const HelloWorldApp = () => {
   };
 
   const onCloseModal = (task, clickdate) => {
-    console.log(clickdate);
     setTaskId(taskId + 1);
     const moment = require('moment');
     let d = new Date(clickdate);
     d = moment(d).format('MMM Do YY');
-    console.log('ddd', d);
     setTaskDetails({
       ...taskdetails,
       [task]: {
@@ -96,24 +79,21 @@ const HelloWorldApp = () => {
         listName: selectedItem.name,
       },
     });
-    
+
     setVisible(false);
     setAllTask(currentData => [...currentData, task]);
-    console.log('taskdetails', taskdetails);
   };
 
   let asArray = Object.entries(taskdetails);
   let result = asArray.filter(i => i[1]['listName'] === selectedItem.name);
-  console.log('result is ', result, showTask);
-  console.log('Finished is', finished);
   return (
     <View style={[styles.appContainer]}>
+      <Text style={styles.heading}>Create Your task</Text>
       {selectedItem != 'New List' && (
-        <View>
+        <View style={{position: 'relative'}}>
           <SelectList
             changeShowTask={changeShowTask}
             list={list}
-            click={click}
             showTask={showTask}
             // allLists={allLists}
             allTask={allTask}
@@ -123,25 +103,34 @@ const HelloWorldApp = () => {
           <View style={styles.taskView}>
             {showTask &&
               result.map(t => (
-                <Text
-                  onPress={deleteTask}
-                  key={Math.random()}
-                  ref={elem => (this.textElem = elem)}
-                  style={styles.task}>
-                  {t[0]}
-                  <View style={styles.date}>
-                    <Text>{t[1].dueDate}</Text>
-                  </View>
-                </Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    borderBottomColor: '#3A5BA0',
+                    borderBottomWidth: 10,
+                  }}>
+                  <Text
+                    onPress={deleteTask}
+                    key={Math.random()}
+                    ref={elem => (this.textElem = elem)}
+                    style={styles.task}>
+                    {t[0]}
+                    <View>
+                      <Text style={styles.date} key={Math.random()}>
+                        {t[1].dueDate}
+                      </Text>
+                    </View>
+                  </Text>
+                </View>
               ))}
           </View>
           <View>
             {selectedItem.name == 'New List' ? (
               <AddNewList newList={newList}></AddNewList>
             ) : selectedItem.name == 'Finished' ? (
-              <>
+              <View style={{position: 'relative'}}>
                 {showTask && (
-                  <View style={styles.taskView}>
+                  <View style={styles.finished}>
                     {finished.map(t => (
                       <Text key={Math.random()} style={styles.task}>
                         {t}
@@ -149,7 +138,7 @@ const HelloWorldApp = () => {
                     ))}
                   </View>
                 )}
-              </>
+              </View>
             ) : null}
           </View>
         </View>
@@ -176,12 +165,19 @@ const HelloWorldApp = () => {
 export default HelloWorldApp;
 const styles = StyleSheet.create({
   appContainer: {
-    flex: 1,
-    padding: 40,
-    paddingLeft: 0,
-    paddingRight: 0,
-    backgroundColor: '#124c81',
+    flex: 2,
+    padding: 25,
+    backgroundColor: '#3A5BA0',
     justifyContent: 'space-between',
+  },
+  heading: {
+    fontSize: 30,
+    marginLeft: 35,
+    padding: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   circleplus: {
     alignSelf: 'flex-end',
@@ -192,18 +188,19 @@ const styles = StyleSheet.create({
     color: 'white',
   },
   taskView: {
-    flexDirection: 'column',
-    position: 'relative',
-    top: -700,
-    backgroundColor: '#42b3f5',
-    justifyContent: 'flex-start',
+    position: 'absolute',
+    top: '50%',
+    left: '48%',
+    transform: [{translateX: -110}, {translateY: -300}],
+    backgroundColor: '#231955',
+    // justifyContent: 'center',
+    alignSelf: 'center',
   },
   date: {
     padding: 10,
     margin: 10,
-    color: 'blue',
+    color: 'white',
     fontSize: 15,
-    borderColor: '#427bf5',
   },
   button: {
     alignItems: 'center',
@@ -215,10 +212,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   task: {
-    margin: 2,
-    padding: 5,
-    borderWidth: 1,
+    padding: 20,
+    color: 'white',
+    fontWeight: 'bold',
+    margin: 10,
     fontSize: 30,
-    borderColor: '#427bf5',
+  },
+  finished: {
+    position: 'absolute',
+    // top: '50%',
+    top: 0,
+    left: '50%',
+    transform: [{translateX: -110}, {translateY: -700}],
+    backgroundColor: '#231955',
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
 });

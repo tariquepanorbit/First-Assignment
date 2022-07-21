@@ -3,13 +3,7 @@ import {useState, useEffect} from 'react';
 import CalendarPicker from 'react-native-calendar-picker';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {faCircleCheck} from '@fortawesome/free-solid-svg-icons';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Pressable,
-  TextInput,
-} from 'react-native';
+import {View, Text, StyleSheet, Pressable, TextInput} from 'react-native';
 const ListModal = props => {
   const [task, setTask] = useState('');
   const textInputHandler = text => {
@@ -19,7 +13,6 @@ const ListModal = props => {
     setSelectedtDate(date);
   };
   const onPress = () => {
-    console.log('date in listmodal', selectedDate);
     props.closeModal(task, selectedDate);
   };
   const [selectedDate, setSelectedtDate] = useState(null);

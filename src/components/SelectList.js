@@ -1,49 +1,35 @@
 import React from 'react';
 import {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 function SelectList({
   data = [],
   value = {},
   showTask,
   onPress = () => {},
   onSelect = () => {},
-  click = {},
   changeShowTask,
 }) {
   const [showList, setShowList] = useState(false);
-  const [clickCount, setClickCount] = useState(0);
-  
+  console.log(data.length);
   onPress = () => {
-    setClickCount(clickCount + 1);
     changeShowTask(showList);
     setShowList(!showList);
-    click(clickCount);
   };
-  
   const onSelectedItem = val => {
     setShowList(false);
     onSelect(val);
   };
-  
   useEffect(() => {
     if (data.length > 3) {
       setShowList(true);
     }
   }, [data]);
-  
   useEffect(() => {
     setShowList(false);
   }, [value]);
-
   useEffect(() => {
     setShowList(!showTask);
   }, [showTask]);
-  console.log('value', value.name);
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.dropDownStyle} onPress={onPress}>
@@ -56,7 +42,10 @@ function SelectList({
               <TouchableOpacity
                 key={String(i)}
                 onPress={() => onSelectedItem(val)}>
-                <Text style={styles.text}>{val.name}</Text>
+                <Text style={styles.text}>
+                  {val.name}
+                  {data.size}
+                </Text>
               </TouchableOpacity>
             );
           })}
@@ -66,8 +55,9 @@ function SelectList({
 }
 const styles = StyleSheet.create({
   container: {
+    padding: 10,
     flexDirection: 'column',
-    width: 200,
+    width: 350,
     height: '100%',
     justifyContent: 'flex-start',
     alignSelf: 'center',
@@ -80,13 +70,15 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     color: 'white',
     fontWeight: 'bold',
+    alignSelf: 'center',
   },
   dropDownStyle: {
-    backgroundColor: '#4881a1',
+    backgroundColor: '#CA4E79',
     padding: 8,
     borderRadius: 6,
     justifyContent: 'center',
-    alignItems: 'center',
+
+    // alignSelf: 'center',
   },
 });
 export default SelectList;
